@@ -42,11 +42,11 @@ quantiles = [0.1, 0.25, 0.5, 0.75, 0.9]
 
 loss_arr = []
 
-dataset = [(y_smp_train[i].reshape(1,600), pars_smp_train[i].reshape(1,15)) for i in range(15000)]
+dataset = [(y_smp_train[i].reshape(1,600), pars_smp_train[i].reshape(1,15)) for i in range(30000)]
 
 for q in tqdm(quantiles):
     for ep in range(NUM_EPOCHS):
-        # random.shuffle(dataset)
+        random.shuffle(dataset)
         for i in range(len(dataset) // BATCH_SIZE):
             batch_x, batch_y = zip(*dataset[i*BATCH_SIZE : i*BATCH_SIZE+BATCH_SIZE])
             x = np.concatenate(batch_x)
@@ -57,7 +57,7 @@ for q in tqdm(quantiles):
             h1 = np.tanh(t1)
             t2 = h1 @ W2 + b2
             z = t2
-            E = np.sum((q/100*((y-z)>0) + (1-q/100)*((y-z)<=0))*abs(y-z))
+            E = np.sum((q/100*((y-z)>0) + (1-q/100)*((z-y)<=0))*abs(y-z))
 
             # Backward Обратное распространение, вычисление градиента
             dE_dt2 = z - y

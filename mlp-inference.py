@@ -37,4 +37,4 @@ for n in range(len(names)):
         answer = np.concatenate((answer, sample), axis=2)
 print(answer)
 print(answer.shape)
-np.save("submit1.npy", answer)
+np.save("submit2.npy", answer)
